@@ -91,8 +91,8 @@
 <script>
 import Navbar from "@/components/common/navbar/Navbar";
 import { onMounted, reactive, computed, toRefs } from "vue";
-import { reqOrderDetail, payOrder, payOrderStatus } from "@/api/order";
-import { useRoute, useRouter } from "vue-router";
+// import { reqOrderDetail, payOrder, payOrderStatus } from "@/api/order";
+import { useRoute } from "vue-router";
 import { Toast } from "vant";
 export default {
   name: "OrderDetail",
@@ -104,7 +104,7 @@ export default {
     //当前路由对象
     const $route = useRoute();
     //路由总管
-    const $router = useRouter();
+    // const $router = useRouter();
     //轮询定时器timer
     var timer = "";
     //当前数据对象
@@ -137,27 +137,27 @@ export default {
       //显示支付窗口
       orderDetail.showPay = true;
       //id确实存在
-      if (orderDetail.orderInfo.orderId) {
-        //订单id
-        let id = orderDetail.orderInfo.orderId;
-        //请求二维码
-        payOrder(id, { type: "aliyun" }).then((res) => {
-          //存放二维码
-          orderDetail.qr_codeAli = res.qr_code_url;
-        });
-        //轮询查看支付信息
-        timer = setInterval(() => {
-          payOrderStatus(id).then((res) => {
-            //支付成功,跳转
-            if (res == 2) {
-              clearInterval(timer);
-              //隐藏支付窗口
-              orderDetail.showPay = false;
-              $router.push({ path: "/orderdetail", query: { id } });
-            }
-          });
-        }, 2000);
-      }
+      // if (orderDetail.orderInfo.orderId) {
+      //   //订单id
+      //   let id = orderDetail.orderInfo.orderId;
+      //   //请求二维码
+      //   // payOrder(id, { type: "aliyun" }).then((res) => {
+      //   //   //存放二维码
+      //   //   orderDetail.qr_codeAli = res.qr_code_url;
+      //   // });
+      //   //轮询查看支付信息
+      //   timer = setInterval(() => {
+      //     payOrderStatus(id).then((res) => {
+      //       //支付成功,跳转
+      //       if (res == 2) {
+      //         clearInterval(timer);
+      //         //隐藏支付窗口
+      //         orderDetail.showPay = false;
+      //         $router.push({ path: "/orderdetail", query: { id } });
+      //       }
+      //     });
+      //   }, 2000);
+      // }
     }
     //关闭支付窗口
     function closePay() {
@@ -177,28 +177,28 @@ export default {
       Toast.loading({ message: "查询中...", duration: 0 });
       //一些订单的创建时间
       //status 1下单 2支付 3发货 4收货 5过期
-      reqOrderDetail($route.query.id).then((res) => {
-        orderDetail.orderInfo.created_at = res.created_at;
-        orderDetail.orderInfo.order_no = res.order_no;
-        //地址信息
-        orderDetail.orderInfo.address = `${res.address.province} ${res.address.city} ${res.address.county} ${res.address.address}`;
-        //订单状态
-        let statusAll = [
-          "",
-          "已下单",
-          "已支付",
-          "等待发货",
-          "确认收货",
-          "已过期",
-        ];
-        orderDetail.orderInfo.statusText = statusAll[res.status]; //计算存储状态文本
-        orderDetail.orderInfo.statusCode = res.status; //计算存储状态字符;
+      // reqOrderDetail($route.query.id).then((res) => {
+      //   orderDetail.orderInfo.created_at = res.created_at;
+      //   orderDetail.orderInfo.order_no = res.order_no;
+      //   //地址信息
+      //   orderDetail.orderInfo.address = `${res.address.province} ${res.address.city} ${res.address.county} ${res.address.address}`;
+      //   //订单状态
+      //   let statusAll = [
+      //     "",
+      //     "已下单",
+      //     "已支付",
+      //     "等待发货",
+      //     "确认收货",
+      //     "已过期",
+      //   ];
+      //   orderDetail.orderInfo.statusText = statusAll[res.status]; //计算存储状态文本
+      //   orderDetail.orderInfo.statusCode = res.status; //计算存储状态字符;
 
-        //内容展示
-        orderDetail.list = res.orderDetails.data || [];
-        //清空提示
-        Toast.clear();
-      });
+      //   //内容展示
+      //   orderDetail.list = res.orderDetails.data || [];
+      //   //清空提示
+      //   Toast.clear();
+      // });
     }
     //计算总金额
     const totalMoney = computed(() => {

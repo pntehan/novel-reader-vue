@@ -62,19 +62,19 @@
 <script>
 import {reactive,toRefs} from "vue";
 import {Toast} from "vant";
-import {reqLogin} from "@/api/user";
-import {useRouter,useRoute} from "vue-router";
-import {useStore} from "vuex";
+// import {reqLogin} from "@/api/user";
+import {useRoute} from "vue-router";
+// import {useStore} from "vuex";
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "login",
   setup(){
     //路由总管
-    const $router = useRouter();
+    // const $router = useRouter();
     //自己的路由信息
     const $route = useRoute();
     //store
-    const $store = useStore();
+    // const $store = useStore();
      /* 存储用户登录输入信息 */
     const userInfo = reactive({
         email:"zmqdream@qq.com",
@@ -107,30 +107,30 @@ export default {
         forbidClick:true,
       });
       //登录提交
-      reqLogin(userInfo).then(response=>{
-        //关闭提示
-        Toast.clear();
-        //提示成功,失败会在拦截器中捕获的
-        Toast.success("登录成功...");
-        //存储数据
-        $store.dispatch("setToken",response.access_token);
-        //存放在localStorage
-        window.localStorage.setItem("EWSHOPAUTHORIZATION",response.access_token);
-        //清空数据
-        userInfo.email = "";
-        userInfo.password="";
-        //跳转到位置
-        setTimeout(() => {
-            //返回到之前的位置
-            $router.go(-1);
-        }, 800);
-      // eslint-disable-next-line no-unused-vars
-      }).catch(reason=>{
-         //关闭提示
-        Toast.clear();
-        console.log("登录失败了");
-        Toast.fail("登录失败,请检查账号密码是否正确!");
-      })
+      // reqLogin(userInfo).then(response=>{
+      //   //关闭提示
+      //   Toast.clear();
+      //   //提示成功,失败会在拦截器中捕获的
+      //   Toast.success("登录成功...");
+      //   //存储数据
+      //   $store.dispatch("setToken",response.access_token);
+      //   //存放在localStorage
+      //   window.localStorage.setItem("EWSHOPAUTHORIZATION",response.access_token);
+      //   //清空数据
+      //   userInfo.email = "";
+      //   userInfo.password="";
+      //   //跳转到位置
+      //   setTimeout(() => {
+      //       //返回到之前的位置
+      //       $router.go(-1);
+      //   }, 800);
+      // // eslint-disable-next-line no-unused-vars
+      // }).catch(reason=>{
+      //    //关闭提示
+      //   Toast.clear();
+      //   console.log("登录失败了");
+      //   Toast.fail("登录失败,请检查账号密码是否正确!");
+      // })
     }
 
     

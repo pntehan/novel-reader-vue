@@ -1,22 +1,48 @@
 <template>
   <div class="swiper-show" >
-    <van-swipe v-if="swiperData.length" :autoplay="3000" indicator-color="skyblue">
-      <van-swipe-item v-for="item in swiperData" :key="item.id">
-        <img :src="item.img_url" :alt="item.title" />
-      </van-swipe-item>
-    </van-swipe>
+    <Swiper v-if="swiperData.length > 0">
+      <Slide v-for="(item, index) in swiperData" :key="index">
+        <img :src="'data:image/jpeg;base64,'+item.img" :alt="item.name" />
+      </Slide>
+    </Swiper>
   </div>
 </template>
 
 <script>
+import { getIndexData } from "@/api/home";
+import { Swiper, Slide } from 'vue-swiper-component'
+
 export default {
   name: "SwiperShow",
-  props: {
-    swiperData: Array,
-    default() {
-      return [];
-    },
+  components: {
+    Swiper,
+    Slide
   },
+  
+  data() {
+    return {
+      swiperData: [],
+    }
+  },
+
+  mounted() {
+    getIndexData().then((res) => {
+      //轮播图数据
+      for (let i=0; i<res.data.length; i++) {
+        this.swiperData.push(
+          {img: res.data[i].img, name: res.data[i].name, id: res.data[i].id}
+        )
+      }
+      console.log(this.swiperData)
+    })
+  },
+
+  methods: {
+    onChange(index) {
+      this.image = this.images[index]
+      console.log(index)
+    }
+  }
 };
 </script>
 

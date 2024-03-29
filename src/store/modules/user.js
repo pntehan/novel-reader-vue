@@ -1,5 +1,4 @@
 
-import {reqListCart} from "@/api/shopcart";
 
 const state = {
     //用户token
@@ -34,11 +33,11 @@ const actions = {
         commit("SET_TOKEN",value);
     },
     /* 请求设置购物车进而获取商品数量,初始化的时候 */
-    setReqCarNum({commit}){
-        reqListCart().then(res=>{
-            commit("SET_CAR_NUM_INIT",res.data.length);
-        })
-    },
+    // setReqCarNum({commit}){
+    //     reqListCart().then(res=>{
+    //         commit("SET_CAR_NUM_INIT",res.data.length);
+    //     })
+    // },
     /* 设置购物车商品数量 */
     setCarNum({commit},value){
         commit("SET_CAR_NUM",value);

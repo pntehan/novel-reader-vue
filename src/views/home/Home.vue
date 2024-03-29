@@ -3,21 +3,12 @@
     <Navbar>
       <template #default> 阅书阁 </template>
     </Navbar>
-    <!-- 列表 -->
-    <TableControlVue
-      v-show="isShow"
-      @indexChange="indexChange"
-      :tableControlTitle="['畅销', '推荐', '精选']"
-    ></TableControlVue>
     <!-- 滚动外壳 -->
     <div class="home-wrapper">
       <!-- 内容区 -->
       <div class="home-content">
         <!-- 轮播图 -->
-
         <SwiperShow :swiperData="swiperData"></SwiperShow>
-        <!-- banner  -->
-        <Banner :bannerData="goods.sales.list"></Banner>
         <!-- 列表 -->
         <div class="table-panel">
           <TableControlVue
@@ -26,7 +17,7 @@
           ></TableControlVue>
         </div>
         <!-- 书籍展示 -->
-        <GoodList :showData="showData"></GoodList>
+        <BookList :showData="showData"></BookList>
       </div>
     </div>
     <ToTop v-show="isShow" @toTopFn="toTopFn"></ToTop>
@@ -35,12 +26,11 @@
 
 <script>
 import Navbar from "@/components/common/navbar/Navbar";
-import Banner from "@/views/home/Child/Banner";
 import TableControlVue from "@/components/content/tableControl/TableControl";
-import GoodList from "@/components/content/good/GoodList";
+import BookList from "@/components/content/book/BookList";
 import ToTop from "@/components/common/toTop/ToTop";
 import SwiperShow from "@/views/home/Child/SwiperShow";
-import { reqIndex, reqProgram } from "@/api/home";
+import { getHomeList } from "@/api/home";
 import {
   reactive,
   ref,
@@ -58,9 +48,8 @@ export default {
   name: "Home",
   components: {
     Navbar,
-    Banner,
     TableControlVue,
-    GoodList,
+    BookList,
     ToTop,
     SwiperShow,
   },
@@ -68,7 +57,7 @@ export default {
     //控制另外一个TableControl的显示
     let isShow = ref(false);
     /* 存储-畅销,推荐,精选数据 */
-    let goods = reactive({
+    let books = reactive({
       sales: { page: 1, list: [] },
       recommend: { page: 1, list: [] },
       new: { page: 1, list: [] },
@@ -82,9 +71,8 @@ export default {
     let typeAll = ["sales", "recommend", "new"];
     /* 计算-获取当前展示列表数据 */
     let showData = computed(() => {
-      return goods[currentType.value].list;
+      return books[currentType.value].list;
     });
-    let swiperData = ref([]);
     /* 变量-better-scroll示例对象 */
     let bs = reactive({});
     //添加窗口大小改变事件,这样子就不会出现从pc切换到移动端无法滚动了
@@ -100,23 +88,22 @@ export default {
       console.log("窗口大小被改变了");
       location.reload();
     },80)
+
     onMounted(() => {
       //距离顶部的距离和加上自己的宽度
       /* 请求-获取畅销书籍*/
-      reqIndex().then((salesData) => {
-        goods.sales.list = salesData.goods.data;
-        //轮播图数据
-        swiperData.value = salesData.slides;
+      getHomeList(["sales", 0]).then((recommendData) => {
+        books.sales.list = recommendData.data;
       });
 
       /* 请求-获取推荐书籍*/
-      reqProgram("recommend").then((recommendData) => {
-        goods.recommend.list = recommendData.goods.data;
+      getHomeList(["recommend", 0]).then((recommendData) => {
+        books.recommend.list = recommendData.data;
       });
 
       /* 请求-获取精选书籍 */
-      reqProgram("new").then((newData) => {
-        goods.new.list = newData.goods.data;
+      getHomeList(["new", 0]).then((newData) => {
+        books.new.list = newData.data;
       });
 
       let abc = document.querySelector(".table-panel").getBoundingClientRect();
@@ -137,16 +124,14 @@ export default {
       bs.on(
         "pullingUp",
         throttle(() => {
-          console.log("到底部了");
           //发送ajax请求获取新页
-          const page = goods[currentType.value].page + 1;
-          reqProgram(currentType.value, page).then((response) => {
+          const page = books[currentType.value].page + 1;
+          getHomeList([currentType.value, page]).then((response) => {
             //新请求的数据添加到原来数据
-            goods[currentType.value].list.push(...response.goods.data);
+            books[currentType.value].list.push(...response.data);
             //页数+1
-            goods[currentType.value].page++;
+            books[currentType.value].page++;
           });
-
           //完成上划动作
           bs.finishPullUp();
           bs.refresh();
@@ -169,9 +154,9 @@ export default {
       //更新索引
       currentIndex.value = newIndex;
       currentType.value = typeAll[newIndex]; //更改当前类型
-      // reqProgram(currentType.value).then((response) => {
-      //   goods[currentType.value].list = response.goods.data;
-      // });
+      getHomeList([currentType.value, 0]).then((response) => {
+        books[currentType.value].list = response.data;
+      });
       nextTick(() => {
         // 重新计算高度
         bs && bs.refresh();
@@ -181,11 +166,10 @@ export default {
     return {
       indexChange,
       showData,
-      goods,
+      books,
       isShow,
       currentIndex,
       toTopFn,
-      swiperData,
       bs,
     };
   },

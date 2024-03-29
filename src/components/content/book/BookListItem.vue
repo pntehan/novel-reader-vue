@@ -1,16 +1,16 @@
 <template>
-  <div class="good-list-item">
+  <div class="book-list-item">
     <div class="list-pic">
-      <img v-lazy="itemData.cover_url" />
+      <img :src="'data:image/jpeg;base64,'+itemData.img" />
     </div>
-    <div class="good-info">
+    <div class="book-info">
       <!-- 书名 -->
-      <p class="good-title">{{itemData.title}}</p>
+      <p class="book-title">{{itemData.name}}</p>
       <p>
           <!-- 价格 -->
-          <span class="good-price"><small>¥</small>{{itemData.price}}</span>
+          <span class="book-price"><small>作者: </small>{{itemData.author}}</span>
           <!-- 书库存 -->
-          <span class="good-collect">{{itemData.stock}}</span>
+          <span class="book-collect">{{itemData.category}}</span>
         </p>
     </div>
   </div>
@@ -18,7 +18,7 @@
 
 <script>
 export default {
-  name: "GoodListItem",
+  name: "BookListItem",
   props:{
     itemData:{
       type:Object,
@@ -31,7 +31,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.good-list-item{
+.book-list-item{
     width: 46%;
     font-size: 13px;
     text-align: center;
@@ -44,7 +44,7 @@ export default {
             width: 100%;
         }
     }
-    .good-info{
+    .book-info{
         display: flex;
         //居中
         flex-direction: column;
@@ -52,17 +52,17 @@ export default {
         &>p{
             width: 100%;
         }
-        .good-price{
+        .book-price{
             color: red;
         }
         // 书名
-        .good-title{
+        .book-title{
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
         }
         //库存
-        .good-collect{
+        .book-collect{
             margin-left: 5px;
             &::before{
                 content: '☆';

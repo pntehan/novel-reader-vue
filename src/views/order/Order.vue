@@ -54,7 +54,7 @@
 import Navbar from "@/components/common/navbar/Navbar";
 import { reactive, toRefs, onMounted } from "vue";
 import {useRouter} from "vue-router";
-import { reqOrderList } from "@/api/order";
+// import { reqOrderList } from "@/api/order";
 import {Toast} from "vant";
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
@@ -120,25 +120,25 @@ export default {
       orderState.loading = true;
       orderState.refreshing = true;
       // 根据当前所处的tab来发起请求获取对应的订单状态: 1下单 2支付 3发货 4收货 5过期
-      reqOrderList({
-        page: orderState.page,
-        status: orderState.status,
-        include: "orderDetails.goods",
-      }).then(res=>{
-          //设置为不在加载状态
-          orderState.loading = false;
-          orderState.refreshing = false;
-          //数据连接在一起
-          orderState.list = orderState.list.concat(res.data);
-          //存储总页数
-          orderState.totalPage =  res.meta.pagination.total_pages;
-          //如果当前页大于等于总页数,设置完结
-          if(orderState.page >=orderState.totalPage){
-            orderState.finished = true;
-          }
-      }).finally(()=>{
-        Toast.clear();
-      })
+      // reqOrderList({
+      //   page: orderState.page,
+      //   status: orderState.status,
+      //   include: "orderDetails.goods",
+      // }).then(res=>{
+      //     //设置为不在加载状态
+      //     orderState.loading = false;
+      //     orderState.refreshing = false;
+      //     //数据连接在一起
+      //     orderState.list = orderState.list.concat(res.data);
+      //     //存储总页数
+      //     orderState.totalPage =  res.meta.pagination.total_pages;
+      //     //如果当前页大于等于总页数,设置完结
+      //     if(orderState.page >=orderState.totalPage){
+      //       orderState.finished = true;
+      //     }
+      // }).finally(()=>{
+      //   Toast.clear();
+      // })
 
     }
     onMounted(() => {

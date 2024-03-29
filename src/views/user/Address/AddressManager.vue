@@ -20,7 +20,7 @@
 
 <script>
 import Navbar from "@/components/common/navbar/Navbar";
-import { reqAddressList } from "@/api/address";
+// import { reqAddressList } from "@/api/address";
 import {Toast} from "vant";
 import { onMounted,reactive,toRefs,} from 'vue';
 import {useRouter } from "vue-router";
@@ -61,25 +61,25 @@ export default {
     //初始化函数
     function init(){
       Toast.loading({message:"载入中...",duration:0,forbidClick:true});
-      reqAddressList().then(res=>{
-        //购物车为空
-        if(res.data.length===0){
-          return;
-        }
-        //购物车不为空的时候
-        addressInfo.list = res.data.map(item=>{
-          return {
-            id: item.id,
-            name: item.name,
-            tel: item.phone,
-            //完整地址
-            address: `${item.province} ${item.city} ${item.county} ${item.address}`,
-            isDefault: !!item.is_default,
-          }
-        })
-      }).finally(()=>{
-        Toast.clear();
-      })
+      // reqAddressList().then(res=>{
+      //   //购物车为空
+      //   if(res.data.length===0){
+      //     return;
+      //   }
+      //   //购物车不为空的时候
+      //   addressInfo.list = res.data.map(item=>{
+      //     return {
+      //       id: item.id,
+      //       name: item.name,
+      //       tel: item.phone,
+      //       //完整地址
+      //       address: `${item.province} ${item.city} ${item.county} ${item.address}`,
+      //       isDefault: !!item.is_default,
+      //     }
+      //   })
+      // }).finally(()=>{
+      //   Toast.clear();
+      // })
     }
     onMounted(()=>{
       init();

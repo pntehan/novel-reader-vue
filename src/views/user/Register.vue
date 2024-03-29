@@ -79,14 +79,14 @@
 
 <script>
 import {reactive,toRefs} from "vue";
-import {reqRegister} from "@/api/user";
+// import {reqRegister} from "@/api/user";
 import {Toast} from "vant";
-import {useRouter} from "vue-router";
+// import {useRouter} from "vue-router";
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Register",
   setup(){
-    const $router = useRouter();
+    // const $router = useRouter();
     /* 存储用户注册信息 */
     const userInfo = reactive({
         name:"梦洁小站在此",
@@ -110,29 +110,29 @@ export default {
         message:"注册中...",
         forbidClick:true,
       });
-      // eslint-disable-next-line no-unused-vars
-      reqRegister(userInfo).then(response=>{
-        //关闭提示
-        Toast.clear();
-        //提示成功,失败会在拦截器中捕获的
-        Toast.success("注册成功...正在跳转");
-        //跳转到位置并传递参数给Login
-        //这里没有加密和应该也不应该这种方式传递的....
-        $router.push({path:"/login",query:{
-          email:userInfo.email,
-          password:userInfo.password,
-        }});
-        //清空数据
-        userInfo.name="";
-        userInfo.email="";
-        userInfo.password="";
-        userInfo.password_confirmation="";
-      // eslint-disable-next-line no-unused-vars
-      }).catch(reason=>{
-        console.log("注册失败");
-         //关闭提示
-        Toast.clear();
-      })
+      // // eslint-disable-next-line no-unused-vars
+      // reqRegister(userInfo).then(response=>{
+      //   //关闭提示
+      //   Toast.clear();
+      //   //提示成功,失败会在拦截器中捕获的
+      //   Toast.success("注册成功...正在跳转");
+      //   //跳转到位置并传递参数给Login
+      //   //这里没有加密和应该也不应该这种方式传递的....
+      //   $router.push({path:"/login",query:{
+      //     email:userInfo.email,
+      //     password:userInfo.password,
+      //   }});
+      //   //清空数据
+      //   userInfo.name="";
+      //   userInfo.email="";
+      //   userInfo.password="";
+      //   userInfo.password_confirmation="";
+      // // eslint-disable-next-line no-unused-vars
+      // }).catch(reason=>{
+      //   console.log("注册失败");
+      //    //关闭提示
+      //   Toast.clear();
+      // })
     }
 
     /* 验证器验证第二次密码 */

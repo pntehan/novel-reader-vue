@@ -54,8 +54,8 @@ import Navbar from "@/components/common/navbar/Navbar";
 import { reactive, toRefs, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { Toast } from "vant";
-import { reqLoginOut,reqUserInfo } from "@/api/user";
-import { useStore } from 'vuex';
+// import { reqLoginOut,reqUserInfo } from "@/api/user";
+// import { useStore } from 'vuex';
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Profile",
@@ -64,7 +64,7 @@ export default {
   },
   setup() {
     const $router = useRouter();
-    const $store = useStore();
+    // const $store = useStore();
     //存储数据
     const userInfo = reactive({
       name:"",
@@ -79,24 +79,24 @@ export default {
     function loginOut() {
       Toast.loading({ duration: 0, message: "退出中...", forbidClick: true });
       // eslint-disable-next-line no-unused-vars
-      reqLoginOut().then((res) => {
-        Toast.clear();
-        //清空认证信息内容
-        $store.dispatch("setLoginOut","");
-        Toast.success("登出成功...");
-        //然后应该跳转下,跳转到主页算了
-        $router.push("/");
-      });
+      // reqLoginOut().then((res) => {
+      //   Toast.clear();
+      //   //清空认证信息内容
+      //   $store.dispatch("setLoginOut","");
+      //   Toast.success("登出成功...");
+      //   //然后应该跳转下,跳转到主页算了
+      //   $router.push("/");
+      // });
     }
     //初始化挂载请求
     function init(){
         Toast.loading({duration:0,message:"正在加载..."});
-        reqUserInfo().then(res=>{
-          userInfo.name = res.name;
-          userInfo.email = res.email;
-        }).finally(()=>{
-          Toast.clear();
-        })
+        // reqUserInfo().then(res=>{
+        //   userInfo.name = res.name;
+        //   userInfo.email = res.email;
+        // }).finally(()=>{
+        //   Toast.clear();
+        // })
     }
     onMounted(()=>{
       init();

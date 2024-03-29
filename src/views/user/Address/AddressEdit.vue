@@ -22,12 +22,12 @@
 
 <script>
 import Navbar from "@/components/common/navbar/Navbar";
-import {reqAddAddress,reqAddressDetail,reqAddressDelete,reqAddressUpdate} from "@/api/address";
+// import {reqAddAddress,reqAddressDetail,reqAddressDelete,reqAddressUpdate} from "@/api/address";
 //Vant 官方提供了一份默认的中国省市区数据
 import { areaList } from '@vant/area-data';
 import {Toast} from "vant";
 import {onBeforeMount, reactive,toRefs} from "vue";
-import {useRouter,useRoute} from "vue-router";
+import {useRoute} from "vue-router";
 export default {
   name: "AddressEdit",
   components: {
@@ -37,7 +37,7 @@ export default {
     //当前路由对象
     const $route = useRoute();
     //路由总管
-    const $router = useRouter();
+    // const $router = useRouter();
     //当前展示信息
     const state = reactive({
       //顶部栏显示字体
@@ -68,58 +68,58 @@ export default {
     //删除按钮
     function onDelete(){
       Toast.loading({message:"删除中...",duration:0,forbidClick:true});
-      reqAddressDelete(state.addressId).then(()=>{
-        Toast.clear();
-        Toast.success("删除成功");
-        // 回到之前页面
-         setTimeout(() => {
-           $router.go(-1);
-        }, 800);
-      }).catch(()=>{
-        Toast.clear();
-      })
+      // reqAddressDelete(state.addressId).then(()=>{
+      //   Toast.clear();
+      //   Toast.success("删除成功");
+      //   // 回到之前页面
+      //    setTimeout(() => {
+      //      $router.go(-1);
+      //   }, 800);
+      // }).catch(()=>{
+      //   Toast.clear();
+      // })
     }
     //用户单击保存
-    function onSave(content){
-      Toast.loading({message:"操作中...",duration:0,forbidClick:true});
-      //#region 
-      // content对象内容
-      // addressDetail: "高大街"    详细地址
-      // areaCode: "130435"     地区编码，通过 省市区选择 获取（必填）
-      // city: "邯郸市"       	城市
-      // country: ""  
-      // county: "曲周县"      区县	
-      // isDefault: false     是否为默认地址	
-      // name: "李白"          姓名
-      // postalCode: ""       邮政编码
-      // province: "河北省"    省份
-      // tel: "13333333333"   手机号
-      //#endregion
-      //1.整理数据
-      let data = {
-        name:content.name,
-        address:content.addressDetail,
-        phone:content.tel,
-        province:content.province,
-        city:content.city,
-        county:content.county,
-        is_default:content.isDefault ? 1 : 0,
-      };
-      //2.判断是增加还是修改
-      let reqFn = $route.query.type==0?reqAddAddress:reqAddressUpdate;
-      //3.判断参数
-      let param = $route.query.type==0?[data]:[$route.query.id,data];
-      //4.发送请求
-      reqFn(...param).then(()=>{
-        Toast.clear();
-        Toast.success($route.query.type==0?'添加成功!':'修改成功!');
-        setTimeout(() => {
-           $router.go(-1);
-        }, 800);
-      }).catch(()=>{
-        Toast.clear();
-      })
-    }
+    // function onSave(content){
+    //   Toast.loading({message:"操作中...",duration:0,forbidClick:true});
+    //   //#region 
+    //   // content对象内容
+    //   // addressDetail: "高大街"    详细地址
+    //   // areaCode: "130435"     地区编码，通过 省市区选择 获取（必填）
+    //   // city: "邯郸市"       	城市
+    //   // country: ""  
+    //   // county: "曲周县"      区县	
+    //   // isDefault: false     是否为默认地址	
+    //   // name: "李白"          姓名
+    //   // postalCode: ""       邮政编码
+    //   // province: "河北省"    省份
+    //   // tel: "13333333333"   手机号
+    //   //#endregion
+    //   //1.整理数据
+    //   // let data = {
+    //   //   name:content.name,
+    //   //   address:content.addressDetail,
+    //   //   phone:content.tel,
+    //   //   province:content.province,
+    //   //   city:content.city,
+    //   //   county:content.county,
+    //   //   is_default:content.isDefault ? 1 : 0,
+    //   // };
+    //   //2.判断是增加还是修改
+    //   // let reqFn = $route.query.type==0?reqAddAddress:reqAddressUpdate;
+    //   //3.判断参数
+    //   // let param = $route.query.type==0?[data]:[$route.query.id,data];
+    //   //4.发送请求
+    //   // reqFn(...param).then(()=>{
+    //   //   Toast.clear();
+    //   //   Toast.success($route.query.type==0?'添加成功!':'修改成功!');
+    //   //   setTimeout(() => {
+    //   //      $router.go(-1);
+    //   //   }, 800);
+    //   // }).catch(()=>{
+    //   //   Toast.clear();
+    //   // })
+    // }
     onBeforeMount(()=>{
       init();
     })
@@ -127,39 +127,39 @@ export default {
     // eslint-disable-next-line no-unused-vars
     function getDetailAddress(id){
       Toast.loading({message:"载入中...",duration:0,forbidClick:true});
-          reqAddressDetail($route.query.id).then((res)=>{
-            let _areaCode = getAreaCode(res.county);
-            state.addressInfo = {
-                name:res.name,
-                tel:res.phone,
-                province: res.province,
-                city:res.city,
-                county:res.county,
-                areaCode:_areaCode,
-                addressDetail:res.address,
-                isDefault: !!res.is_default
-            };
+        //   reqAddressDetail($route.query.id).then((res)=>{
+        //     let _areaCode = getAreaCode(res.county);
+        //     state.addressInfo = {
+        //         name:res.name,
+        //         tel:res.phone,
+        //         province: res.province,
+        //         city:res.city,
+        //         county:res.county,
+        //         areaCode:_areaCode,
+        //         addressDetail:res.address,
+        //         isDefault: !!res.is_default
+        //     };
 
-          }).finally(()=>{
-            Toast.clear();
-        })
+        //   }).finally(()=>{
+        //     Toast.clear();
+        // })
     }
     //获取对应区获取区域代码
-    function getAreaCode(county){
-      var id = "";
-      //通过抛出异常来中断,以此来提高速度
-      Object.keys(areaList.county_list).forEach(itemKey=>{
-        try {
-          if(areaList.county_list[itemKey] === county){
-            throw new Error(itemKey);
-          }
-        } catch (error) {
-          id = error.message;
-        }
-      });
+    // function getAreaCode(county){
+    //   var id = "";
+    //   //通过抛出异常来中断,以此来提高速度
+    //   Object.keys(areaList.county_list).forEach(itemKey=>{
+    //     try {
+    //       if(areaList.county_list[itemKey] === county){
+    //         throw new Error(itemKey);
+    //       }
+    //     } catch (error) {
+    //       id = error.message;
+    //     }
+    //   });
 
-      return id;
-    }
+    //   return id;
+    // }
     //初始化操作
     function init(){
        //代表是新增地址
@@ -180,7 +180,7 @@ export default {
    
     return {
       areaList,
-      onSave,
+      // onSave,
       ...toRefs(state),
       onDelete,
     }

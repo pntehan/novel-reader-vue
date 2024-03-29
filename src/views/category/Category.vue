@@ -68,7 +68,7 @@ import {
   computed,
   nextTick,
 } from "vue";
-import { reqCategory, reqCategoryGoods } from "@/api/category";
+// import { reqCategory, reqCategoryGoods } from "@/api/category";
 import {useRouter} from "vue-router";
 import ToTop from "@/components/common/toTop/ToTop";
 /* 第三方插件 */
@@ -133,14 +133,14 @@ export default {
         return;
       }
       showGood.value = [];
-      //2.否者的话数据请求
-      reqCategoryGoods(currentType.value, currentCid.value).then((response) => {
-        goods[currentType.value].list = response.goods.data;
-        //重新计算高度
-        nextTick(() => {
-          bs.refresh();
-        });
-      });
+      // //2.否者的话数据请求
+      // reqCategoryGoods(currentType.value, currentCid.value).then((response) => {
+      //   goods[currentType.value].list = response.goods.data;
+      //   //重新计算高度
+      //   nextTick(() => {
+      //     bs.refresh();
+      //   });
+      // });
     }
 
     /* 监视左侧二级列表和排序方式的变化 */
@@ -170,21 +170,21 @@ export default {
       });
       showGood.value = [];
       // 重新发送请求
-      reqCategoryGoods(currentType.value, currentCid.value).then((response) => {
-        goods[currentType.value].list = response.goods.data;
-        //重新计算高度
-        nextTick(() => {
-          bs.refresh();
-        });
-      });
+      // reqCategoryGoods(currentType.value, currentCid.value).then((response) => {
+      //   goods[currentType.value].list = response.goods.data;
+      //   //重新计算高度
+      //   nextTick(() => {
+      //     bs.refresh();
+      //   });
+      // });
     }
     onMounted(() => {
-      reqCategory().then((result) => {
-        //保存存储数据
-        categoryList.value = result.categories;
-        //保存默认数据
-        goods.sales.list = result.goods.data;
-      });
+      // reqCategory().then((result) => {
+      //   //保存存储数据
+      //   categoryList.value = result.categories;
+      //   //保存默认数据
+      //   goods.sales.list = result.goods.data;
+      // });
 
       bs = new BetterScroll(".show-list", {
         //允许单击滚动列表的元素
@@ -205,14 +205,14 @@ export default {
         throttle(() => {
           console.log("到底部了");
           //1.页码+1
-          let page = goods[currentType.value].page++;
+          // let page = goods[currentType.value].page++;
           //2.发送数据
-          reqCategoryGoods(currentType.value, currentCid.value, page).then(
-            (response) => {
-              //3.添加到原来数据
-              goods[currentType.value].list.push(...response.goods.data);
-            }
-          );
+          // reqCategoryGoods(currentType.value, currentCid.value, page).then(
+          //   (response) => {
+          //     //3.添加到原来数据
+          //     goods[currentType.value].list.push(...response.goods.data);
+          //   }
+          // );
           //4.完成上划动作
           bs.finishPullUp();
           //5.重新计算高度

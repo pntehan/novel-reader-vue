@@ -51,7 +51,7 @@
 <script>
 import Navbar from "@/components/common/navbar/Navbar";
 import { reactive,onMounted,toRefs,computed, } from "vue";
-import {reqListCart,reqChangeNumCart,reqChangeStateCart,reqRemoveCart} from "@/api/shopcart";
+// import {reqListCart,reqChangeNumCart,reqChangeStateCart,reqRemoveCart} from "@/api/shopcart";
 import debounce from "lodash/debounce";
 import {useStore} from "vuex";
 import {useRouter} from "vue-router";
@@ -99,14 +99,14 @@ export default {
           Toast.loading({duration:0});
           //1.数据库中删除记录
           // eslint-disable-next-line no-unused-vars
-          reqRemoveCart(id).then(res=>{
-          //2.当前数据删除
-          shopList.list.splice(index,1); 
-          //3.清除提示
-          Toast.clear();
-          //4.购物车数量-1
-          $store.dispatch("setCarNum",-1);
-          }); 
+          // reqRemoveCart(id).then(res=>{
+          // //2.当前数据删除
+          // shopList.list.splice(index,1); 
+          // //3.清除提示
+          // Toast.clear();
+          // //4.购物车数量-1
+          // $store.dispatch("setCarNum",-1);
+          // }); 
         })
         .catch(() => {
           // on cancel
@@ -137,9 +137,9 @@ export default {
       //更改选中列表
       shopList.cartChecked = checkList;
       //发送请求更改选中状态
-      reqChangeStateCart({
-        cart_ids:checkList
-      })
+      // reqChangeStateCart({
+      //   cart_ids:checkList
+      // })
     }
     //提交订单
     function onSubmit(){
@@ -149,15 +149,15 @@ export default {
     //请求购物车信息
     function init(){
       Toast.loading({message:"正在加载...",forbidClick:true,duration:0})
-      reqListCart(1).then((res)=>{
-        //保存用户购物车信息
-        shopList.list = res.data;
-        //保存选中项 filter返回过滤后的,map返回指定处理后的数组
-        shopList.cartChecked=res.data.filter(item1=>item1.is_checked===1).map(item2=>item2.id);
-      }).finally(()=>{
-        //关闭提示框
-        Toast.clear();
-      })
+      // reqListCart(1).then((res)=>{
+      //   //保存用户购物车信息
+      //   shopList.list = res.data;
+      //   //保存选中项 filter返回过滤后的,map返回指定处理后的数组
+      //   shopList.cartChecked=res.data.filter(item1=>item1.is_checked===1).map(item2=>item2.id);
+      // }).finally(()=>{
+      //   //关闭提示框
+      //   Toast.clear();
+      // })
     }
     //购物车数量商品数量被改变,第一个参数更新后的商品数量,第二个参数为一些详细信息
     //这里写一个节流阀
@@ -165,9 +165,9 @@ export default {
         let [id,index]=detail.name.split("&");
         console.log("你单击了改变数量,商品id为",id);
         console.log(index);
-        reqChangeNumCart(id,{
-          num:amount
-        });
+        // reqChangeNumCart(id,{
+        //   num:amount
+        // });
         //更改list列表当中的商品数量,以便可以计算总价
         shopList.list[index].num = amount;
         //更改购车列表项目,也就是更改购物车商品总数

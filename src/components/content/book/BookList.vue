@@ -1,22 +1,22 @@
 <template>
   <div>
     <div class="good">
-      <GoodListItem
+      <BookListItem
         v-for="item in showData"
         :key="item.id"
         :itemData="item"
         @click="viewDetail(item.id)"
       >
-      </GoodListItem>
+      </BookListItem>
     </div>
   </div>
 </template>
 
 <script>
-import GoodListItem from "@/components/content/good/GoodListItem";
+import BookListItem from "@/components/content/book/BookListItem";
 import { useRouter } from 'vue-router';
 export default {
-  name: "GoodList",
+  name: "BookList",
   props: {
     showData: {
       type: Array,
@@ -26,7 +26,7 @@ export default {
     },
   },
   components: {
-    GoodListItem,
+    BookListItem,
   },
   setup(){
     const $router = useRouter();

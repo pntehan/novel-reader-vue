@@ -64,7 +64,7 @@ const routes = [
     name: "Detail",
     component: Detail,
     meta: {
-      title: "详细信息-dreamlove.top"
+      title: "阅书阁-小说详情"
     },
     beforeEnter: (to, from, next) => {
       if (to.query.id) {

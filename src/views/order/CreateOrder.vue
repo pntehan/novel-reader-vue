@@ -78,7 +78,7 @@ import { reactive, onMounted, toRefs, computed,ref } from "vue";
 import Navbar from "@/components/common/navbar/Navbar";
 import {useRouter } from "vue-router";
 import { useStore } from "vuex";
-import { reqOrderPreview, reqOrderCreate,payOrder,payOrderStatus } from "@/api/order";
+// import { reqOrderPreview, reqOrderCreate,payOrder,payOrderStatus } from "@/api/order";
 import { Toast } from "vant";
 export default {
   name:"CreateOrder",
@@ -127,16 +127,16 @@ export default {
         Toast.loading({message:"提交中...",duration:0,forbidClick:true});
         try {
             //1.提交订单
-            let createOrderInfo = await reqOrderCreate({ address_id: orderState.addressInfo.id });
+            // let createOrderInfo = await reqOrderCreate({ address_id: orderState.addressInfo.id });
             //1.1重新计算购物车数量
             store.dispatch('setReqCarNum');
             //2.提交返回的订单id,进行再次提交获取支付二维码,(api接口问题,这里用支付宝,具体沙箱支付宝这里提供了)
-            orderState.orderId = createOrderInfo.id;
+            // orderState.orderId = createOrderInfo.id;
             //3.请求支付宝二维码 
-            let qrCodeInfo = await payOrder(orderState.orderId,{type:'aliyun'});
+            // let qrCodeInfo = await payOrder(orderState.orderId,{type:'aliyun'});
             //4.保存二维码
             // 当然,你也可以选择跳转到支付宝支付~使用qr_code就可以
-            orderState.qr_codeAli = qrCodeInfo.qr_code_url;
+            // orderState.qr_codeAli = qrCodeInfo.qr_code_url;
             //5.显示支付窗口
             showPay.value = true;
             //6.关闭提示框
@@ -145,18 +145,18 @@ export default {
             // setTimeout(() => {
             //     router.push({path:'/orderdetail', query:{id:orderState.orderId}});
             // }, 3000);
-            timer = setInterval(async () => {
-              let payResult = await payOrderStatus(orderState.orderId);
-              if(payResult == 2){
-                //支付成功
-                //1.清除定时器
-                clearInterval(timer);
-                //2.消息提示
-                Toast.success("支付成功...");
-                //3.跳转到订单详情
-                router.push({path:'/orderdetail', query:{id:orderState.orderId}});
-              }
-            }, 2000);
+            // timer = setInterval(async () => {
+            //   let payResult = await payOrderStatus(orderState.orderId);
+            //   if(payResult == 2){
+            //     //支付成功
+            //     //1.清除定时器
+            //     clearInterval(timer);
+            //     //2.消息提示
+            //     Toast.success("支付成功...");
+            //     //3.跳转到订单详情
+            //     router.push({path:'/orderdetail', query:{id:orderState.orderId}});
+            //   }
+            // }, 2000);
         } catch (error) {
             console.log(error);
         }
@@ -172,26 +172,26 @@ export default {
     /* 初始化操作 */
     function init() {
       Toast.loading({ message: "创建中...", duration: 0 });
-      reqOrderPreview()
-        .then((res) => {
-          //存放商品信息
-          orderState.cartList = res.carts;
-          //过滤存放选中的地址以获取默认地址
-          let address = (orderState.addressInfo = res.address.filter((item) => {
-            return item.is_default == 1;
-          }));
-          //存放选中地址
-          if (address.length === 0) {
-            orderState.addressInfo = {
-              address: "还没有设置默认地址,请选择或填写地址信息",
-            };
-          } else {
-            orderState.addressInfo = address[0];
-          }
-        })
-        .finally(() => {
-          Toast.clear();
-        });
+      // reqOrderPreview()
+      //   .then((res) => {
+      //     //存放商品信息
+      //     orderState.cartList = res.carts;
+      //     //过滤存放选中的地址以获取默认地址
+      //     let address = (orderState.addressInfo = res.address.filter((item) => {
+      //       return item.is_default == 1;
+      //     }));
+      //     //存放选中地址
+      //     if (address.length === 0) {
+      //       orderState.addressInfo = {
+      //         address: "还没有设置默认地址,请选择或填写地址信息",
+      //       };
+      //     } else {
+      //       orderState.addressInfo = address[0];
+      //     }
+      //   })
+      //   .finally(() => {
+      //     Toast.clear();
+      //   });
     }
     //计算总价格
     orderState.totalPrice = computed(() => {
