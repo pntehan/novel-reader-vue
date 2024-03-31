@@ -60,25 +60,25 @@
 </template>
 
 <script>
-import {reactive,toRefs} from "vue";
-import {Toast} from "vant";
-// import {reqLogin} from "@/api/user";
-import {useRoute} from "vue-router";
-// import {useStore} from "vuex";
+import { reactive, toRefs } from "vue";
+import { showNotify } from "vant";
+import { userLogin } from "@/api/user";
+import { useRoute, useRouter } from "vue-router";
+import { useStore } from "vuex";
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "login",
   setup(){
     //路由总管
-    // const $router = useRouter();
+    const $router = useRouter()
     //自己的路由信息
-    const $route = useRoute();
+    const $route = useRoute()
     //store
-    // const $store = useStore();
+    const $store = useStore()
      /* 存储用户登录输入信息 */
     const userInfo = reactive({
-        email:"zmqdream@qq.com",
-        password:"123456789",
+        email:"",
+        password:"",
     });
     //空对象就算是空的,转化为布尔值也是为真
     if(Object.keys($route.query).length){
@@ -102,35 +102,32 @@ export default {
     /* 用户单击提交数据 */
     function onSubmit(){
       //显示提示
-      Toast.loading({
-        message:"登录中...",
-        forbidClick:true,
-      });
+      showNotify({ type: 'primary', message:"登录中..." })
       //登录提交
-      // reqLogin(userInfo).then(response=>{
-      //   //关闭提示
-      //   Toast.clear();
-      //   //提示成功,失败会在拦截器中捕获的
-      //   Toast.success("登录成功...");
-      //   //存储数据
-      //   $store.dispatch("setToken",response.access_token);
-      //   //存放在localStorage
-      //   window.localStorage.setItem("EWSHOPAUTHORIZATION",response.access_token);
-      //   //清空数据
-      //   userInfo.email = "";
-      //   userInfo.password="";
-      //   //跳转到位置
-      //   setTimeout(() => {
-      //       //返回到之前的位置
-      //       $router.go(-1);
-      //   }, 800);
-      // // eslint-disable-next-line no-unused-vars
-      // }).catch(reason=>{
-      //    //关闭提示
-      //   Toast.clear();
-      //   console.log("登录失败了");
-      //   Toast.fail("登录失败,请检查账号密码是否正确!");
-      // })
+      userLogin(userInfo).then(res=>{
+        if (res.status == 200) {
+          //提示成功,失败会在拦截器中捕获的
+          showNotify({ type: 'success', message: "登录成功..." })
+          //存储数据
+          $store.dispatch("setUserId", res.data.id)
+          //清空数据
+          userInfo.email = ""
+          userInfo.password= ""
+          //跳转到位置
+          setTimeout(() => {
+              //返回到之前的位置
+              $router.go(-1)
+          }, 800);
+        }
+        else {
+          console.log(res)
+          showNotify({ type: 'warning', message: "登录失败, 请检查账号密码是否正确!" })
+        }
+      // eslint-disable-next-line no-unused-vars
+      }).catch(reason=>{
+         //关闭提示
+        showNotify({ type: 'warning', message: "登录失败, 请检查账号密码是否正确!" })
+      })
     }
 
     

@@ -33,14 +33,12 @@ export default {
           {img: res.data[i].img, name: res.data[i].name, id: res.data[i].id}
         )
       }
-      console.log(this.swiperData)
     })
   },
 
   methods: {
     onChange(index) {
       this.image = this.images[index]
-      console.log(index)
     }
   }
 };

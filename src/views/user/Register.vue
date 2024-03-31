@@ -78,21 +78,21 @@
 </template>
 
 <script>
-import {reactive,toRefs} from "vue";
-// import {reqRegister} from "@/api/user";
-import {Toast} from "vant";
-// import {useRouter} from "vue-router";
+import { reactive, toRefs } from "vue";
+import { userRegister } from "@/api/user";
+import { showNotify } from "vant";
+import {useRouter} from "vue-router";
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Register",
   setup(){
-    // const $router = useRouter();
+    const $router = useRouter();
     /* 存储用户注册信息 */
     const userInfo = reactive({
-        name:"梦洁小站在此",
-        email:"zmqdream@qq.com",
-        password:"123456789",
-        password_confirmation:"123456789"
+        name:"",
+        email:"",
+        password:"",
+        password_confirmation:""
     });
     /* 正则验证规则 */
     const regCheck = {
@@ -106,33 +106,29 @@ export default {
     /* 用户单击提交数据 */
     function onSubmit(){
       //显示提示
-      Toast.loading({
-        message:"注册中...",
-        forbidClick:true,
-      });
-      // // eslint-disable-next-line no-unused-vars
-      // reqRegister(userInfo).then(response=>{
-      //   //关闭提示
-      //   Toast.clear();
-      //   //提示成功,失败会在拦截器中捕获的
-      //   Toast.success("注册成功...正在跳转");
-      //   //跳转到位置并传递参数给Login
-      //   //这里没有加密和应该也不应该这种方式传递的....
-      //   $router.push({path:"/login",query:{
-      //     email:userInfo.email,
-      //     password:userInfo.password,
-      //   }});
-      //   //清空数据
-      //   userInfo.name="";
-      //   userInfo.email="";
-      //   userInfo.password="";
-      //   userInfo.password_confirmation="";
-      // // eslint-disable-next-line no-unused-vars
-      // }).catch(reason=>{
-      //   console.log("注册失败");
-      //    //关闭提示
-      //   Toast.clear();
-      // })
+      showNotify({type: 'primary', message: '注册中...'})
+      // eslint-disable-next-line no-unused-vars
+      userRegister(userInfo).then(res => {
+        showNotify({type: 'success', message: '注册成功...正在跳转'})
+        //跳转到位置并传递参数给Login
+        if (res.status == 200) {
+          $router.push({path:"/login", query:{
+            email:userInfo.email,
+            password:userInfo.password,
+          }})
+          //清空数据
+          userInfo.name = ""
+          userInfo.email = ""
+          userInfo.password = ""
+          userInfo.password_confirmation = ""
+        }
+        if (res.status == 300) {
+          showNotify({type: 'warning', message: res.msg})
+        }
+      // eslint-disable-next-line no-unused-vars
+      }).catch(reason=>{
+        console.log("注册失败");
+      })
     }
 
     /* 验证器验证第二次密码 */

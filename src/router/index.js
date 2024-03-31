@@ -5,11 +5,11 @@ import {
 //引入仓库
 import store from "@/store/index";
 import {
-  Toast
+  showNotify
 } from "vant";
 //引入路由组件
 const Home = () => import("@/views/home/Home");
-const ShopCart = () => import("@/views/shopcart/ShopCart");
+const Shelf = () => import("@/views/shelf/Shelf");
 const Category = () => import("@/views/category/Category");
 const User = () => import("@/views/user/User");
 const Detail = () => import("@/views/detail/Detail");
@@ -17,9 +17,7 @@ const Register = () => import("@/views/user/Register");
 const Login = () => import("@/views/user/Login");
 const AddressManager = () => import("@/views/user/Address/AddressManager");
 const AddressEdit = () => import("@/views/user/Address/AddressEdit");
-const CreateOrder = () => import("@/views/order/CreateOrder");
-const Order = () => import("@/views/order/Order");
-const OrderDetail = () => import("@/views/order/OrderDetail");
+const Reader = () => import("@/views/reader/Reader");
 const About = () => import("@/views/other/About");
 // meta为定义window.title的属性所用
 const routes = [
@@ -33,19 +31,27 @@ const routes = [
     },
   },
   {
-    path: "/shopcart",
-    name: "Shopcart",
-    component: ShopCart,
+    path: "/shelf",
+    name: "Shelf",
+    component: Shelf,
     meta: {
-      title: "购物车-dreamlove.top"
+      title: "阅书阁-书架"
     },
+    beforeEnter: (to, from, next) => {
+      if (store.state.user.user_id) {
+        //有认证信息，跳转到个人中心
+        next();
+      } else {
+        next("/login");
+      }
+    }
   },
   {
     path: "/category",
     name: "Category",
     component: Category,
     meta: {
-      title: "商品分类-dreamlove.top",
+      title: "阅书阁-分类",
       keepAlive: true, // 组件需要缓存
     }
   },
@@ -54,7 +60,7 @@ const routes = [
     name: "User",
     component: User,
     meta: {
-      title: "个人中心-dreamlove.top",
+      title: "阅书阁-个人中心",
     },
   },
   {
@@ -82,10 +88,10 @@ const routes = [
     name: "Register",
     component: Register,
     meta: {
-      title: "用户注册-dreamlove.top"
+      title: "阅书阁-用户注册"
     },
     beforeEnter: (to, from, next) => {
-      if (store.state.user.Authorization) {
+      if (store.state.user.user_id) {
         //有认证信息，跳转到个人中心
         next("/user");
       } else {
@@ -98,10 +104,10 @@ const routes = [
     name: "Login",
     component: Login,
     meta: {
-      title: "用户登录-dreamlove.top"
+      title: "阅书阁-用户登录"
     },
     beforeEnter: (to, from, next) => {
-      if (store.state.user.Authorization) {
+      if (store.state.user.user_id) {
         //有认证信息，跳转到个人中心
         next("/user");
       } else {
@@ -126,27 +132,11 @@ const routes = [
     }
   },
   {
-    path: "/createorder",
-    name: "CreateOrder",
-    component: CreateOrder,
+    path: "/reader",
+    name: "Reader",
+    component: Reader,
     meta: {
-      title: "订单预览-dreamlove.top"
-    }
-  },
-  {
-    path: "/order",
-    name: "Order",
-    component: Order,
-    meta: {
-      title: "订单管理-dreamlove.top"
-    }
-  },
-  {
-    path: "/orderdetail",
-    name: "Orderdetail",
-    component: OrderDetail,
-    meta: {
-      title: "订单详情-dreamlove.top"
+      title: "阅书阁-小说阅读"
     }
   },
   {
@@ -180,11 +170,11 @@ router.beforeEach((to, from, next) => {
   if (path === "/" || path === "/category" || path === "/detail" || path === "/register" || path === "/login" || path === "/about") {
     next();
   } else {
-    if (store.state.user.Authorization) {
+    if (store.state.user.user_id) {
       //有认证信息，放行
       next();
     } else {
-      Toast.fail("请登录");
+      showNotify("请登录");
       //没有认证信息,跳转到登录界面
       next("/login");
     }

@@ -17,22 +17,17 @@
       </div>
 
       <ul class="user-list">
-        <li class="van-hairline--bottom"  style="background-color:rgb(241 241 241);" >
-          <!-- @click="goTo('/collect')" -->
-          <span>我的收藏</span>
-          <van-icon name="arrow" />
-        </li>
-        <li class="van-hairline--bottom" @click="goTo('/order')">
-          <span>我的订单</span>
-          <van-icon name="arrow" />
-        </li>
-        <li class="van-hairline--bottom" style="background-color:rgb(241 241 241);">
+        <li class="van-hairline--bottom" style="background-color:rgb(241 241 241);" @click="goTo('/setting')">
           <!-- @click="goTo('/setting')" -->
           <span>账号管理</span>
           <van-icon name="arrow" />
         </li>
         <li class="van-hairline--bottom" @click="goTo('/address')">
-          <span>地址管理</span>
+          <span>我的评论</span>
+          <van-icon name="arrow" />
+        </li>
+        <li class="van-hairline--bottom" @click="goTo('/address')">
+          <span>公告信息</span>
           <van-icon name="arrow" />
         </li>
         <li class="van-hairline--bottom" @click="goTo('/about')">
@@ -53,9 +48,9 @@
 import Navbar from "@/components/common/navbar/Navbar";
 import { reactive, toRefs, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import { Toast } from "vant";
+import { showNotify } from "vant";
 // import { reqLoginOut,reqUserInfo } from "@/api/user";
-// import { useStore } from 'vuex';
+import { useStore } from 'vuex'
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Profile",
@@ -63,8 +58,8 @@ export default {
     Navbar,
   },
   setup() {
-    const $router = useRouter();
-    // const $store = useStore();
+    const $router = useRouter()
+    const $store = useStore()
     //存储数据
     const userInfo = reactive({
       name:"",
@@ -77,26 +72,22 @@ export default {
     }
     //退出登录
     function loginOut() {
-      Toast.loading({ duration: 0, message: "退出中...", forbidClick: true });
-      // eslint-disable-next-line no-unused-vars
-      // reqLoginOut().then((res) => {
-      //   Toast.clear();
-      //   //清空认证信息内容
-      //   $store.dispatch("setLoginOut","");
-      //   Toast.success("登出成功...");
-      //   //然后应该跳转下,跳转到主页算了
-      //   $router.push("/");
-      // });
+      showNotify({ type: 'primary', message: '退出中...' })
+      //清空认证信息内容
+      $store.dispatch("setLoginOut", "")
+      showNotify({ type: 'primary', message: '登出成功...' })
+      //然后应该跳转下,跳转到主页算了
+      $router.push("/");
     }
     //初始化挂载请求
     function init(){
-        Toast.loading({duration:0,message:"正在加载..."});
-        // reqUserInfo().then(res=>{
-        //   userInfo.name = res.name;
-        //   userInfo.email = res.email;
-        // }).finally(()=>{
-        //   Toast.clear();
-        // })
+      showNotify({ type: 'primary', message: '正在加载...' })
+      // reqUserInfo().then(res=>{
+      //   userInfo.name = res.name;
+      //   userInfo.email = res.email;
+      // }).finally(()=>{
+      //   showToast.clear();
+      // })
     }
     onMounted(()=>{
       init();

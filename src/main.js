@@ -1,7 +1,7 @@
 import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
-import store from './store';
+import store from './store/index';
 import { Lazyload } from 'vant';
 import Vant from 'vant';
 //这里手动引入下样式,莫名其妙没有自动引入

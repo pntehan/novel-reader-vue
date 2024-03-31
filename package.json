@@ -15,6 +15,7 @@
     "less": "^4.2.0",
     "less-loader": "^12.2.0",
     "nprogress": "^0.2.0",
+    "stylus-loader": "^8.1.0",
     "vant": "^4.8.7",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",

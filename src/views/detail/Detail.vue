@@ -4,6 +4,14 @@
     <Navbar>
       <template #default> 小说详情 </template>
     </Navbar>
+    <!-- 弹出 -->
+    <van-dialog v-model:show="showAdd" title="加入书架" @confirm="addToShelf" show-cancel-button>
+      <van-radio-group v-model="checked" direction="horizontal" style="margin: 10px;">
+        <van-radio name="我的最爱">我的最爱</van-radio>
+        <van-radio name="随便看看">随便看看</van-radio>
+        <van-radio name="精品">精品</van-radio>
+      </van-radio-group>
+    </van-dialog>
     <!-- 展示部分 -->
     <div class="detail-show">
       <!-- 图片展示 -->
@@ -14,8 +22,8 @@
       <div class="operation">
         <van-card style="text-align: left;font-size:17px" :desc="book.category" :title="book.name">
           <template #bottom>
-            <van-button color="linear-gradient(#fcd51f, #feba23)" @click="addToCart" style="margin: 10px;">加入书架</van-button>
-            <van-button color="linear-gradient(#fe3e4e, #f72e1d)" @click="shopNow" style="margin: 10px;">立即阅读</van-button>
+            <van-button color="linear-gradient(#fcd51f, #feba23)" @click="showAddToShelf" style="margin: 10px;">加入书架</van-button>
+            <van-button color="linear-gradient(#fe3e4e, #f72e1d)" @click="readBook" style="margin: 10px;">立即阅读</van-button>
           </template>
         </van-card>
       </div>
@@ -27,11 +35,22 @@
             <div class="book-detail-info" v-html="book.intro" style="margin-top: 10px;"></div>
           </van-tab>
           <van-tab title="热评">
-            <!-- 没见过,占位 -->
-            <van-skeleton title :row="10" />
+            <van-list>
+              <van-cell v-for="item in comments" :key="item.id">
+                <van-row>
+                  <van-col span="18">
+                    <p>{{ item.content }}</p>
+                  </van-col>
+                  <van-col span="6">
+                    <p>{{ item.create_time }}</p>
+                    <van-divider />
+                  </van-col>
+                </van-row>
+              </van-cell>
+            </van-list>
           </van-tab>
           <van-tab title="相关图书">
-              <BookList :showData="like_books" style="margin-top: 10px;"></BookList>
+            <BookList :showData="like_books" style="margin-top: 10px;"></BookList>
           </van-tab>
         </van-tabs>
       </div>
@@ -46,8 +65,9 @@ import { useRoute,useRouter } from "vue-router";
 import { onMounted, ref, reactive, toRefs} from "vue";
 import { getBook } from "@/api/book";
 // import {reqAddCart} from "@/api/shopcart";
-import { Toast } from "vant";
 import { useStore } from 'vuex';
+import { showNotify } from "vant";
+import { addShelf } from "@/api/book"
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
   name: "Detail",
@@ -62,9 +82,10 @@ export default {
     const $router = useRouter();
     //获取存储仓库
     const store = useStore();
-    const id = ref();
     //记录当前选择项
     const active = ref(0);
+    let showAdd = ref(false);
+    let checked = ref("我的最爱");
     let detailInfo = reactive({
       //里面有数据项comments
       book: {},
@@ -80,52 +101,52 @@ export default {
       })
     }
     //判断是否可以加入购物车和立即购买
-    function canBuy(){
+    function canRead(){
       //具有认证信息
-      if(store.state.user.Authorization){
+      if(store.state.user.user_id){
         return true;
       }else{
         return false;
       }
     }
-    //添加到购物车
-    async function addToCart(){
-      let isCanBuy = canBuy();
-      if(!isCanBuy){
-        //不可以添加到购物车
+
+    function showAddToShelf() {
+      let isCanRead = canRead();
+      if(!isCanRead){
         //跳转到登录
         $router.push("/login");
-        return;
+        return
       }
-      //判断是否有商品id
-      if(!id.value){
-        return;
-      }
-      //有商品id
-      try {
-        // await reqAddCart({
-        //     goods_id:id.value,
-        //     num:1
-        // });
-        Toast.success("添加购物车成功");
-        //购物车数量+1
-        store.dispatch("setCarNum",1);
-      } catch (error) {
-        // Toast.fail("添加购物车失败,请检查网络是否正常");
-      }
+      showAdd.value = true
     }
-    //立即购买
-    async function shopNow(){
-      let isCanBuy = canBuy();
-      if(!isCanBuy){
+
+    //添加到购物车
+    function addToShelf() {
+      let params = {
+        user_id: store.state.user.user_id,
+        book_id: detailInfo.book.id,
+        group_name: checked.value 
+      }
+      addShelf(params).then((res) => {
+        if (res.status == 200) {
+          showNotify({type: 'success', message: '加入成功！'})
+        }
+        else {
+          showNotify({type: 'warning', message: '加入失败！'})
+        }
+      })
+    }
+    //立即阅读
+    function readBook() {
+      let isCanRead = canRead();
+      if(!isCanRead){
         //不可以添加到购物车
         //跳转到登录
         $router.push("/login");
         return;
       }
-      await addToCart();
       //其实应该跳转到结算页面的....
-      $router.push("/shopcart")
+      $router.push({ path: "/reader", query: {id: detailInfo.book.id} })
     }
     //记录数据
     onMounted(() => {
@@ -140,12 +161,14 @@ export default {
     });
 
     return {
-      id,
       ...toRefs(detailInfo),
       active,
+      showAdd,
+      checked,
       onClickTab,
-      addToCart,
-      shopNow,
+      showAddToShelf,
+      addToShelf,
+      readBook,
       store
     };
   },

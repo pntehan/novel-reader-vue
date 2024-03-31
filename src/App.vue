@@ -18,7 +18,7 @@
       <div>分类</div>
     </router-link>
 
-    <router-link to="/shopcart" class="tab-bar-item">
+    <router-link to="/shelf" class="tab-bar-item">
       <div>
         <!-- 添加徽标 -->
         <van-badge :content="$store.state.user.amountCarts" max="99">
