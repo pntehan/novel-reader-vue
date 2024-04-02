@@ -6,10 +6,17 @@
       <div class="chapterContent" v-show="!loading">
         <p v-for="(c,i) in content" :key="i">{{c}}</p>
       </div>
-      <div class="btn-bar" v-show="!loading">
+      <div class="btn-bar" v-show="loading">
         <ul class="btn-tab">
           <li class="prev-btn" @click="prevChapter">上一章</li>
           <li class="next-btn" @click="nextChapter">下一章</li>
+          <van-circle
+            :current-rate="currentRate"
+            :rate="rate"
+            size="240px"
+            text="阅读进度"
+            style="margin: 50px auto 0;"
+          />
         </ul>
       </div>
     </div>
@@ -19,8 +26,7 @@
     <bottom-nav></bottom-nav>
     <!--<transition name="fade">-->
     <cover :class="{hide:!list_panel}"></cover>
-    <list-panel :class="{show: list_panel}" :bookId="$route.query.id"></list-panel>
-    <loading v-show="loading"></loading>
+    <list-panel :class="{show: list_panel}" :bookId="$route.query.id" @getChapterNum="setNum"></list-panel>
     <!--</transition>-->
   </div>
 </template>
@@ -31,7 +37,6 @@ import BottomNav from '@/views/BottomNav/BottomNav';
 import FontNav from '@/views/FontNav/FontNav';
 import ListPanel from '@/views/ListPanel/ListPanel';
 import Cover from './Cover';
-import Loading from '@/views/Loading/Loading.vue'
 import { getChapter } from '@/api/book'
 import { mapState } from 'vuex';
 
@@ -45,6 +50,8 @@ export default {
       loading: false,
       showList: false,
       booksReadInfo: {},
+      currentRate: 0,
+      chapterLen: 0
     };
   },
   components: {
@@ -52,7 +59,6 @@ export default {
     FontNav,
     ListPanel,
     Cover,
-    Loading,
   },
   created() {
     //判断本地是否存储了阅读器文字大小
@@ -71,7 +77,8 @@ export default {
       this.booksReadInfo = localEvent.StorageGetter('bookreaderinfo');
       this.getData(id, this.booksReadInfo[id].chapter);
       this.$store.dispatch('curChapter', this.booksReadInfo[id].chapter);
-    } else {
+    } 
+    else {
       //当前书籍没有读过但是localStorage保存了其他书籍进度
       if (localBookReaderInfo) {
         this.booksReadInfo = localBookReaderInfo;
@@ -93,10 +100,17 @@ export default {
     this.$refs.fz_size.style.fontSize = this.fz_size + 'px';
   },
   methods: {
+    setNum(value) {
+      this.chapterLen = value
+    },
+    setRate() {
+      this.currentRate = (this.$store.state.curChapter / this.chapterLen) * 100
+    },
     //切换上下工具栏，如果字体面板显示点击也关闭
     clickBar() {
       this.$store.dispatch('toggleBar');
       this.$store.state.font_panel = false;
+      this.loading = !this.loading
     },
     startScroll(target, speed) {
       let times = null;
@@ -133,6 +147,7 @@ export default {
         this.loading = false
         this.title = res.data.title
         this.content = res.data.content.split('&;&;&')
+        this.setRate()
       })
       this.$store.state.windowHeight = window.screen.height;
     },
@@ -202,7 +217,7 @@ export default {
   font-size: 16px;
   color: #555;
   line-height: 31px;
-  min-height: 600px;
+  min-height: 900px;
   padding: 15px;
   h4 {
     // position: fixed;
@@ -233,7 +248,7 @@ export default {
   .btn-bar {
     z-index: 80;
     width: 80%;
-    margin: 20px auto 0;
+    margin: 200px auto 0;
     max-width: 800px;
     .btn-tab {
       padding-left: 0;

@@ -13,18 +13,18 @@
       <div>首页</div>
     </router-link>
 
+    <router-link to="/search" class="tab-bar-item">
+      <div><i class="iconfont icon-search"></i></div>
+      <div>首页</div>
+    </router-link>
+
     <router-link to="/category" class="tab-bar-item">
       <div><i class="iconfont icon-2"></i></div>
       <div>分类</div>
     </router-link>
 
     <router-link to="/shelf" class="tab-bar-item">
-      <div>
-        <!-- 添加徽标 -->
-        <van-badge :content="$store.state.user.amountCarts" max="99">
-          <i class="iconfont icon-shujia1"></i>
-        </van-badge>
-      </div>
+      <div><i class="iconfont icon-shujia1"></i></div>
       <div>书架</div>
     </router-link>
 

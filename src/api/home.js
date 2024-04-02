@@ -7,3 +7,7 @@ export const getIndexData = () => {
 export const getHomeList = (query) => {
     return post('/api/getHomeList', query)
 }
+
+export const getSearchList = (query) => {
+    return post('/api/getSearchList', query)
+}

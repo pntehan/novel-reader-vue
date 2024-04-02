@@ -48,6 +48,7 @@ export default {
     getList() {
       getChapterList({id: this.bookId}).then((res) => {
         this.chapterList = res.data
+        this.$emit("getChapterNum", this.chapterList.length)
       })
     }
   }

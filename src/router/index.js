@@ -9,6 +9,7 @@ import {
 } from "vant";
 //引入路由组件
 const Home = () => import("@/views/home/Home");
+const Search = () => import("@/views/search/Search");
 const Shelf = () => import("@/views/shelf/Shelf");
 const Category = () => import("@/views/category/Category");
 const User = () => import("@/views/user/User");
@@ -27,6 +28,15 @@ const routes = [
     component: Home,
     meta: {
       title: "阅书阁-首页",
+      keepAlive: true, // 组件需要缓存
+    },
+  },
+  {
+    path: '/search',
+    name: "Search",
+    component: Search,
+    meta: {
+      title: "阅书阁-搜书",
       keepAlive: true, // 组件需要缓存
     },
   },
