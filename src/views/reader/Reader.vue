@@ -51,7 +51,8 @@ export default {
       showList: false,
       booksReadInfo: {},
       currentRate: 0,
-      chapterLen: 0
+      chapterLen: 0,
+      fz_size: this.$store.state.fz_size
     };
   },
   components: {
@@ -158,6 +159,7 @@ export default {
       setTimeout(() => {
         document.body.scrollTop = 0;
       }, 300);
+      this.loading = false
     },
     //更换章节时保存阅读进度到localStorage
     nextChapter() {
@@ -166,6 +168,7 @@ export default {
       setTimeout(() => {
         document.body.scrollTop = 0;
       }, 300);
+      this.loading = false
     },
     saveBooksInfo() {
       //可用localStorage保存每本小说阅读进度

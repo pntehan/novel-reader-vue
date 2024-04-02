@@ -15,7 +15,7 @@
 
     <router-link to="/search" class="tab-bar-item">
       <div><i class="iconfont icon-search"></i></div>
-      <div>首页</div>
+      <div>搜书</div>
     </router-link>
 
     <router-link to="/category" class="tab-bar-item">

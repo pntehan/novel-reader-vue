@@ -24,3 +24,7 @@ export const getChapterList = (query) => {
 export const getChapter = (query) => {
     return post('/api/getChapter', query)
 }
+
+export const downloadBook = (query) => {
+    return post('/api/downloadBook', query)
+}

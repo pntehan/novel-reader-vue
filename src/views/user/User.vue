@@ -9,24 +9,23 @@
         <div class="info">
           <img src="https://dreamlove.top/img/favicon.png" />
           <div class="user-desc">
-            <span>昵称：{{name}}</span>
-            <span>登录名：{{email}}</span>
-            <span class="name">个性签名：叫我将军大人!</span>
+            <span>昵称：{{ name }}</span>
+            <span>邮箱：{{ email }}</span>
+            <span class="name">个性签名：{{ intro }}</span>
           </div>
         </div>
       </div>
 
       <ul class="user-list">
         <li class="van-hairline--bottom" style="background-color:rgb(241 241 241);" @click="goTo('/setting')">
-          <!-- @click="goTo('/setting')" -->
           <span>账号管理</span>
           <van-icon name="arrow" />
         </li>
-        <li class="van-hairline--bottom" @click="goTo('/address')">
+        <li class="van-hairline--bottom" @click="goTo('/comment')">
           <span>我的评论</span>
           <van-icon name="arrow" />
         </li>
-        <li class="van-hairline--bottom" @click="goTo('/address')">
+        <li class="van-hairline--bottom" @click="goTo('/info')">
           <span>公告信息</span>
           <van-icon name="arrow" />
         </li>
@@ -49,7 +48,7 @@ import Navbar from "@/components/common/navbar/Navbar";
 import { reactive, toRefs, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { showNotify } from "vant";
-// import { reqLoginOut,reqUserInfo } from "@/api/user";
+import { getUser } from "@/api/user";
 import { useStore } from 'vuex'
 export default {
   // eslint-disable-next-line vue/multi-word-component-names
@@ -62,12 +61,12 @@ export default {
     const $store = useStore()
     //存储数据
     const userInfo = reactive({
-      name:"",
-      email:"",
+      name: "",
+      email: "",
+      intro: ""
     })
     //跳转路由
     function goTo(path) {
-      console.log("单击了跳转路由");
       $router.push(path);
     }
     //退出登录
@@ -82,12 +81,12 @@ export default {
     //初始化挂载请求
     function init(){
       showNotify({ type: 'primary', message: '正在加载...' })
-      // reqUserInfo().then(res=>{
-      //   userInfo.name = res.name;
-      //   userInfo.email = res.email;
-      // }).finally(()=>{
-      //   showToast.clear();
-      // })
+      getUser({user_id: $store.state.user.user_id}).then( res => {
+        localStorage.setItem("user", JSON.stringify(res.data))
+        userInfo.name = res.data.name
+        userInfo.email = res.data.email
+        userInfo.intro = res.data.intro
+      })
     }
     onMounted(()=>{
       init();

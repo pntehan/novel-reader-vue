@@ -16,10 +16,13 @@ const User = () => import("@/views/user/User");
 const Detail = () => import("@/views/detail/Detail");
 const Register = () => import("@/views/user/Register");
 const Login = () => import("@/views/user/Login");
-const AddressManager = () => import("@/views/user/Address/AddressManager");
-const AddressEdit = () => import("@/views/user/Address/AddressEdit");
 const Reader = () => import("@/views/reader/Reader");
+const LocalReader = () => import("@/views/localReader/Reader");
+const Listener = () => import("@/views/listener/Listener");
 const About = () => import("@/views/other/About");
+const Setting = () => import("@/views/user/Setting");
+const Comment = () => import("@/views/user/Comment");
+const Info = () => import("@/views/user/Info");
 // meta为定义window.title的属性所用
 const routes = [
   {
@@ -71,6 +74,30 @@ const routes = [
     component: User,
     meta: {
       title: "阅书阁-个人中心",
+    },
+  },
+  {
+    path: "/setting",
+    name: "Setting",
+    component: Setting,
+    meta: {
+      title: "阅书阁-信息管理",
+    },
+  },
+  {
+    path: "/comment",
+    name: "Comment",
+    component: Comment,
+    meta: {
+      title: "阅书阁-我的评论",
+    },
+  },
+  {
+    path: "/info",
+    name: "Info",
+    component: Info,
+    meta: {
+      title: "阅书阁-公告信息",
     },
   },
   {
@@ -126,27 +153,27 @@ const routes = [
     }
   },
   {
-    path: "/address",
-    name: "Address",
-    component: AddressManager,
-    meta: {
-      title: "地址管理-dreamlove.top"
-    }
-  },
-  {
-    path: "/addressedit",
-    name: "Addressedit",
-    component: AddressEdit,
-    meta: {
-      title: "地址编辑-dreamlove.top"
-    }
-  },
-  {
     path: "/reader",
     name: "Reader",
     component: Reader,
     meta: {
       title: "阅书阁-小说阅读"
+    }
+  },
+  {
+    path: "/localReader",
+    name: "LocalReader",
+    component: LocalReader,
+    meta: {
+      title: "阅书阁-小说阅读"
+    }
+  },
+  {
+    path: "/listener",
+    name: "Listener",
+    component: Listener,
+    meta: {
+      title: "阅书阁-听书"
     }
   },
   {

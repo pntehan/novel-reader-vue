@@ -20,10 +20,12 @@
       </div>
       <!-- 用户操作及书籍信息 -->
       <div class="operation">
-        <van-card style="text-align: left;font-size:17px" :desc="book.category" :title="book.name">
+        <van-card style="text-align: left; font-size:17px; margin: 10px" :desc="book.category" :title="book.name">
           <template #bottom>
-            <van-button color="linear-gradient(#fcd51f, #feba23)" @click="showAddToShelf" style="margin: 10px;">加入书架</van-button>
-            <van-button color="linear-gradient(#fe3e4e, #f72e1d)" @click="readBook" style="margin: 10px;">立即阅读</van-button>
+            <van-button color="linear-gradient(#fcd51f, #feba23)" @click="showAddToShelf" style="margin: 5px; width: 90px">加入书架</van-button>
+            <van-button color="linear-gradient(#fe3e4e, #f72e1d)" @click="readBook" style="margin: 5px; width: 90px">立即阅读</van-button>
+            <van-button color="linear-gradient(#fe3e4e, #f72e1d)" @click="localReadBook" style="margin: 5px; width: 90px">下载阅读</van-button>
+            <van-button color="linear-gradient(#fe3e4e, #f72e1d)" @click="listenBook" style="margin: 5px; width: 90px">点击听书</van-button>
           </template>
         </van-card>
       </div>
@@ -55,15 +57,17 @@
         </van-tabs>
       </div>
     </div>
+    <loading v-show="downloading"></loading>
   </div>
 </template>
 
 <script>
 import Navbar from "@/components/common/navbar/Navbar";
 import BookList from '@/components/content/book/BookList'
+import Loading from '@/views/localReader/Loading.vue';
 import { useRoute,useRouter } from "vue-router";
 import { onMounted, ref, reactive, toRefs} from "vue";
-import { getBook } from "@/api/book";
+import { getBook, getChapter, getChapterList } from "@/api/book";
 // import {reqAddCart} from "@/api/shopcart";
 import { useStore } from 'vuex';
 import { showNotify } from "vant";
@@ -73,9 +77,12 @@ export default {
   name: "Detail",
   components: {
     Navbar,
-    BookList
+    BookList,
+    Loading
   },
   setup() {
+    // 记录是否下载
+    const downloading = ref(false);
     //获取当前路由信息
     const $route = useRoute();
     //获取路由总管
@@ -140,13 +147,47 @@ export default {
     function readBook() {
       let isCanRead = canRead();
       if(!isCanRead){
-        //不可以添加到购物车
         //跳转到登录
         $router.push("/login");
         return;
       }
-      //其实应该跳转到结算页面的....
       $router.push({ path: "/reader", query: {id: detailInfo.book.id} })
+    }
+    // 下载单章
+    async function downloadOne(id1, id2) {
+      let res = await getChapter({book_id: id1, chapter_id: id2})
+      let data = {
+        title: res.data.title,
+        content: res.data.content.split('&;&;&')
+      }
+      localStorage.setItem(id1+"_"+id2, JSON.stringify(data))
+    }
+    //下载阅读
+    function localReadBook() {
+      let isCanRead = canRead();
+      if(!isCanRead){
+        //跳转到登录
+        $router.push("/login");
+        return;
+      }
+      // 打开缓存
+      downloading.value = true
+      getChapterList({id: detailInfo.book.id}).then(async (res) => {
+        let chapterList = res.data
+        localStorage.setItem("chapterList", JSON.stringify(chapterList))
+        for (let i=0; i<chapterList.length; i++) {
+          if (JSON.parse(localStorage.getItem(chapterList[i].id))) {
+            continue
+          }
+          await downloadOne(detailInfo.book.id, chapterList[i].id.split("_")[1])
+        }
+        downloading.value = false
+        $router.push({ path: "/localReader", query: {id: detailInfo.book.id} })
+      })
+    }
+    // 听书
+    function listenBook() {
+      $router.push({ path: "/listener", query: {id: detailInfo.book.id} })
     }
     //记录数据
     onMounted(() => {
@@ -160,8 +201,10 @@ export default {
       });
     });
 
+
     return {
       ...toRefs(detailInfo),
+      downloading,
       active,
       showAdd,
       checked,
@@ -169,6 +212,8 @@ export default {
       showAddToShelf,
       addToShelf,
       readBook,
+      localReadBook,
+      listenBook,
       store
     };
   },

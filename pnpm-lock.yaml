@@ -5,6 +5,12 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@jhao413/vue-audio-player':
+    specifier: ^1.0.8
+    version: 1.0.8
+  '@liripeng/vue-audio-player':
+    specifier: ^1.5.3
+    version: 1.5.3
   '@vant/area-data':
     specifier: ^1.5.1
     version: 1.5.1
@@ -35,6 +41,9 @@ dependencies:
   vue:
     specifier: ^3.2.13
     version: 3.4.21
+  vue-audio-player:
+    specifier: ^0.0.2
+    version: 0.0.2
   vue-router:
     specifier: ^4.0.3
     version: 4.3.0(vue@3.4.21)
@@ -100,6 +109,38 @@ packages:
       '@jridgewell/gen-mapping': 0.3.5
       '@jridgewell/trace-mapping': 0.3.25
     dev: true
+
+  /@any-touch/compute@2.2.0:
+    resolution: {integrity: sha512-hrw74b/cVT8SmiKFLValmllajw+bBvTa5iUwIXFVVIJM9T3tO15zZC2QbjVz8Uwi6XjH932RDUILGMs2TNvyQg==}
+    dependencies:
+      '@any-touch/shared': 2.2.0
+      '@any-touch/vector': 2.2.0
+      tslib: 2.6.2
+    dev: false
+
+  /@any-touch/core@2.2.0:
+    resolution: {integrity: sha512-xMHAA5aLCatFto+4fQWyE4YAsyN/LsXS4mnYuVpqFYoNz8dl5FsB/TIyb9JrqMKLYMxxcZ9joqR8gDprH1lwBw==}
+    dependencies:
+      '@any-touch/shared': 2.2.0
+      any-event: 2.2.0
+    dev: false
+
+  /@any-touch/pan@2.2.0:
+    resolution: {integrity: sha512-uMkCHbTm5qWji/FvhumP9n1ZCkPU7hy864g+ZhoWZ0OWAmn7s/TKRo4UqPBfqEPUMV6obGZvatrrgBLWT6J57w==}
+    dependencies:
+      '@any-touch/compute': 2.2.0
+      '@any-touch/shared': 2.2.0
+    dev: false
+
+  /@any-touch/shared@2.2.0:
+    resolution: {integrity: sha512-2n1zWaATi/3osr/dkIUq5O7aSffKUsTM4DsIbPMW1VEO77v/rX2HkLoxt2Djzj5eCGh7An55Vw8NeA33kTTSRA==}
+    dev: false
+
+  /@any-touch/vector@2.2.0:
+    resolution: {integrity: sha512-t7pGYegIDCJl+swwsohZHZKmF71ZMt+hjwVEyhaEP6nQhcx6S7zulxnRxNp1t8s+c/JdK02Q89HnzQ4Ukg4+IA==}
+    dependencies:
+      '@any-touch/shared': 2.2.0
+    dev: false
 
   /@babel/code-frame@7.12.11:
     resolution: {integrity: sha512-Zt1yodBx1UcyiePMSkWnU4hPqhwq7hGi2nFL1LeA3EUl+q2LQx16MISgJ0+z7dnmgvP9QtIleuETGOiOH1RcIw==}
@@ -1485,6 +1526,12 @@ packages:
     resolution: {integrity: sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==}
     dev: true
 
+  /@jhao413/vue-audio-player@1.0.8:
+    resolution: {integrity: sha512-KMPaHpcvOXmlI9F2tbmezfwNnPhpygVzYVZ9Sy4sTO7ir/NaL2b394zZ3mPGrRnXyWPMzrtYBr4okURK/xL3fQ==}
+    dependencies:
+      vue: 2.7.16
+    dev: false
+
   /@jridgewell/gen-mapping@0.3.5:
     resolution: {integrity: sha512-IzL8ZoEDIBRWEzlCcRhOaCupYyN5gdIK+Q6fbFdPDg6HqX6jpkItn7DFIpW9LQzXG6Df9sA7+OKnq0qlz/GaQg==}
     engines: {node: '>=6.0.0'}
@@ -1519,6 +1566,89 @@ packages:
   /@leichtgewicht/ip-codec@2.0.4:
     resolution: {integrity: sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A==}
     dev: true
+
+  /@liripeng/vue-audio-player@1.3.0-beta5:
+    resolution: {integrity: sha512-00XSEiRjz5ZLcKKkaLXXhcC0092Qz+rgi2vEAsm9vR9wtK2FNP87Ot+qozBKSR/1zWQp1RAhTDcb0tQ+XcbKjw==}
+    dependencies:
+      '@any-touch/core': 2.2.0
+      '@any-touch/pan': 2.2.0
+      vue: 3.4.21
+      vue-router: 4.3.0(vue@3.4.21)
+    transitivePeerDependencies:
+      - typescript
+    dev: false
+
+  /@liripeng/vue-audio-player@1.4.0:
+    resolution: {integrity: sha512-v4TlS2Vaq6TymzgTiSvU9gBU9xcFcnTDWFrnswmOfWOqU6Qd8v3KdHMRQ0/SWEgPkdqFKkDFivJEk5aGLfa4VQ==}
+    dependencies:
+      '@any-touch/core': 2.2.0
+      '@any-touch/pan': 2.2.0
+      '@liripeng/vue-audio-player': 1.3.0-beta5
+      vue: 2.7.16
+      vue-router: 3.6.5(vue@2.7.16)
+    transitivePeerDependencies:
+      - typescript
+    dev: false
+
+  /@liripeng/vue-audio-player@1.4.1-beta:
+    resolution: {integrity: sha512-w52+E+x+ltHfyswz+H3Jpj1Evx3tomJrPi4hwyzn3Eqvu9UsAf9xTIoNG6eFTTubbNYEu0cPD9q+Kj5eZ4pI9Q==}
+    dependencies:
+      '@any-touch/core': 2.2.0
+      '@any-touch/pan': 2.2.0
+      '@liripeng/vue-audio-player': 1.4.0
+      vue: 2.7.16
+      vue-router: 3.6.5(vue@2.7.16)
+    transitivePeerDependencies:
+      - typescript
+    dev: false
+
+  /@liripeng/vue-audio-player@1.4.1-beta1:
+    resolution: {integrity: sha512-Y4aUFJk9LfdWueFkqDC2Juk17gul35L6hEtoSWyWExNVY9XJflyBsXFe6EHTaVaHLq9Ij7oKSs29JrMmnxvNcQ==}
+    dependencies:
+      '@any-touch/core': 2.2.0
+      '@any-touch/pan': 2.2.0
+      '@liripeng/vue-audio-player': 1.4.1-beta
+      vue: 2.7.16
+      vue-router: 3.6.5(vue@2.7.16)
+    transitivePeerDependencies:
+      - typescript
+    dev: false
+
+  /@liripeng/vue-audio-player@1.5.0:
+    resolution: {integrity: sha512-nt51tfMlzanb2LgiLD0nMQWGjoN1iCf2CBQPlnJvpn5SySBBDoCzNxqBPKaLGfNmFsi+yrd84cC3ZY0D/qMICg==}
+    dependencies:
+      '@any-touch/core': 2.2.0
+      '@any-touch/pan': 2.2.0
+      '@liripeng/vue-audio-player': 1.4.1-beta1
+      vue: 3.4.21
+      vue-router: 4.3.0(vue@3.4.21)
+    transitivePeerDependencies:
+      - typescript
+    dev: false
+
+  /@liripeng/vue-audio-player@1.5.1:
+    resolution: {integrity: sha512-UtXhPC1GKvqnF5tNo+PRF89FgSn1NHvRmp/P0Zzcm+pY+1dy/K4O1vxGq5dFZdhKyG8PrjOhMZmrRFNVjVhOqg==}
+    dependencies:
+      '@any-touch/core': 2.2.0
+      '@any-touch/pan': 2.2.0
+      '@liripeng/vue-audio-player': 1.5.0
+      vue: 3.4.21
+      vue-router: 4.3.0(vue@3.4.21)
+    transitivePeerDependencies:
+      - typescript
+    dev: false
+
+  /@liripeng/vue-audio-player@1.5.3:
+    resolution: {integrity: sha512-/EKU7oTHsVvV/JuJK4jF2zYFuOyMdj0m5OTwSTqXdEmUoM5/BGpwNlbG2J1BB/Z+VQBeurZlJc0eykZq/NrO9w==}
+    dependencies:
+      '@any-touch/core': 2.2.0
+      '@any-touch/pan': 2.2.0
+      '@liripeng/vue-audio-player': 1.5.1
+      vue: 3.4.21
+      vue-router: 4.3.0(vue@3.4.21)
+    transitivePeerDependencies:
+      - typescript
+    dev: false
 
   /@nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1:
     resolution: {integrity: sha512-54/JRvkLIzzDWshCWfuhadfrfZVPiElY8Fcgmg1HroEly/EDSszzhBAsarCux+D/kOslTRquNzuyGSmUSTTHGg==}
@@ -2193,6 +2323,16 @@ packages:
       '@vue/compiler-core': 3.4.21
       '@vue/shared': 3.4.21
 
+  /@vue/compiler-sfc@2.7.16:
+    resolution: {integrity: sha512-KWhJ9k5nXuNtygPU7+t1rX6baZeqOYLEforUPjgNDBnLicfHCoi48H87Q8XyLZOrNNsmhuwKqtpDQWjEFe6Ekg==}
+    dependencies:
+      '@babel/parser': 7.24.1
+      postcss: 8.4.38
+      source-map: 0.6.1
+    optionalDependencies:
+      prettier: 2.8.8
+    dev: false
+
   /@vue/compiler-sfc@3.4.21:
     resolution: {integrity: sha512-me7epoTxYlY+2CUM7hy9PCDdpMPfIwrOvAXud2Upk10g4YLv9UBW7kL798TvMeDhPthkZ0CONNrK2GoeI1ODiQ==}
     dependencies:
@@ -2551,6 +2691,12 @@ packages:
     dependencies:
       color-convert: 2.0.1
     dev: true
+
+  /any-event@2.2.0:
+    resolution: {integrity: sha512-PB4sEiVUjL+5mLmwlAGYdI5/1ouckapxS6+RPIvrGXv9XTMav7M3k3rR/f9fwAR+e2608CTR3FOR5HrOEYTtKA==}
+    dependencies:
+      tslib: 2.6.2
+    dev: false
 
   /any-promise@1.3.0:
     resolution: {integrity: sha512-7UvmKalWRt1wgjL1RrGxoSJW/0QZFIegpeGvZG9kjp8vrRu55XTHbwnqq2GpXm9uLbcuhxm3IqX9OB4MZR1b2A==}
@@ -5912,7 +6058,6 @@ packages:
     engines: {node: '>=10.13.0'}
     hasBin: true
     requiresBuild: true
-    dev: true
     optional: true
 
   /pretty-error@4.0.0:
@@ -6879,6 +7024,13 @@ packages:
     engines: {node: '>= 0.8'}
     dev: true
 
+  /vue-audio-player@0.0.2:
+    resolution: {integrity: sha512-q8n8x/Nh2Ls2Qkd0Agta6COo60PPM9rGONwZSoCqwmhWhF8XzbTXKFWpsIb7dRbWMtZa8oNIB1VTFgzCcwm7Ow==}
+    engines: {node: '>= 6.0.0', npm: '>= 3.0.0'}
+    dependencies:
+      vue: 2.7.16
+    dev: false
+
   /vue-eslint-parser@8.3.0(eslint@7.32.0):
     resolution: {integrity: sha512-dzHGG3+sYwSf6zFBa0Gi9ZDshD7+ad14DGOdTLjruRVgZXe2J+DcZ9iUhyR48z5g1PqRa20yt3Njna/veLJL/g==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
@@ -7002,6 +7154,14 @@ packages:
       webpack: 5.91.0
     dev: true
 
+  /vue-router@3.6.5(vue@2.7.16):
+    resolution: {integrity: sha512-VYXZQLtjuvKxxcshuRAwjHnciqZVoXAjTjcqBTz4rKc8qih9g9pI3hbDjmqXaHdgL3v8pV6P8Z335XvHzESxLQ==}
+    peerDependencies:
+      vue: ^2
+    dependencies:
+      vue: 2.7.16
+    dev: false
+
   /vue-router@4.3.0(vue@3.4.21):
     resolution: {integrity: sha512-dqUcs8tUeG+ssgWhcPbjHvazML16Oga5w34uCUmsk7i0BcnskoLGwjpa15fqMr2Fa5JgVBrdL2MEgqz6XZ/6IQ==}
     peerDependencies:
@@ -7025,6 +7185,14 @@ packages:
   /vue-template-es2015-compiler@1.9.1:
     resolution: {integrity: sha512-4gDntzrifFnCEvyoO8PqyJDmguXgVPxKiIxrBKjIowvL9l+N66196+72XVYR8BBf1Uv1Fgt3bGevJ+sEmxfZzw==}
     dev: true
+
+  /vue@2.7.16:
+    resolution: {integrity: sha512-4gCtFXaAA3zYZdTp5s4Hl2sozuySsgz4jy1EnpBHNfpMa9dK1ZCG7viqBPCwXtmgc8nHqUsAu3G4gtmXkkY3Sw==}
+    deprecated: Vue 2 has reached EOL and is no longer actively maintained. See https://v2.vuejs.org/eol/ for more details.
+    dependencies:
+      '@vue/compiler-sfc': 2.7.16
+      csstype: 3.1.3
+    dev: false
 
   /vue@3.4.21:
     resolution: {integrity: sha512-5hjyV/jLEIKD/jYl4cavMcnzKwjMKohureP8ejn3hhEjwhWIhWeuzL2kJAjzl/WyVsgPY56Sy4Z40C3lVshxXA==}
